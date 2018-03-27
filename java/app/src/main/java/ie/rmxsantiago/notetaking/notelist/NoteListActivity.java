@@ -1,13 +1,22 @@
-package ie.rmxsantiago.notetaking;
+package ie.rmxsantiago.notetaking.notelist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SimpleAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import ie.rmxsantiago.notetaking.note.NoteActivity;
+import ie.rmxsantiago.notetaking.R;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -18,12 +27,17 @@ public class NoteListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        RecyclerView recyclerView = findViewById(R.id.noteListRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new NoteListAdapter(Arrays.asList(getResources().getStringArray(R.array.test))));
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent noteIntent = new Intent(getApplicationContext(), NoteActivity.class);
+                startActivity(noteIntent);
             }
         });
     }
@@ -43,7 +57,7 @@ public class NoteListActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_email) {
             return true;
         }
 
