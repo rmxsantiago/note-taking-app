@@ -15,24 +15,26 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import ie.rmxsantiago.notetaking.model.DataManager;
 import ie.rmxsantiago.notetaking.note.NoteActivity;
 import ie.rmxsantiago.notetaking.R;
 
 public class NoteListActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = findViewById(R.id.noteListRecyclerView);
+        recyclerView = findViewById(R.id.noteListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new NoteListAdapter(Arrays.asList(getResources().getStringArray(R.array.test))));
+        recyclerView.setAdapter(new NoteListAdapter(DataManager.getNotes()));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,9 +45,15 @@ public class NoteListActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_note_list, menu);
+        //getMenuInflater().inflate(R.menu.menu_note_list, menu);
         return true;
     }
 
